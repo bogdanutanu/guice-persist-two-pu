@@ -111,6 +111,17 @@ public class MyModuleTest {
         assertThat(actual, is("slave"));
     }
 
+    @Test
+    public void switchPersistenceUnits() throws Exception {
+        MyTableService myTableService = injector.getInstance(Key.get(MyTableService.class, MasterPu.class));
+        String actual = myTableService.fetch();
+        assertThat(actual, is("master"));
+
+        myTableService = injector.getInstance(Key.get(MyTableService.class, SlavePu.class));
+        actual = myTableService.fetch();
+        assertThat(actual, is("slave"));
+    }
+
     @After
     public void tearDown() throws Exception {
         injector.getInstance(Key.get(UnitOfWork.class, MasterPu.class)).end();
